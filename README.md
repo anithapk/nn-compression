@@ -1,6 +1,6 @@
 # nn-compression
 
-# Introduction
+## Introduction
   Over the years there has been tremendous interest and effort in moving deep learning applications to mobile and embedded platforms. Being a self-driving car enthusiast, the applications that immediately caught my attention are vehicle and pedestrian detection and Google Visual Translate as a travel enthusiast. What makes it challenging to move these applications to resource-limited platforms?
   
   The depth of the neural networks plays a crucial role in the extracting the hierarchical information in images, specifically for visual tasks. Even though the architecture of these models have improved over time, a typical model still has billions of operations and millions of parameters. This poses challenges in fitting them in memory, specifically in SRAM as SRAM access is three orders of magnitude cheaper than DRAM access. Reducing the size also helps in transmitting the apps built on such models as currently there is a 100MB limit for over the air download of iOS apps.  
@@ -11,15 +11,17 @@
 
 [1]:https://arxiv.org/abs/1510.00149
   
-# Framework 
+## Framework 
 programmed in python2.7. Tools: Tensorflow 0.12, Numpy, openCV
 
-# Credits
+## Credits
 The tensorflow implementation of VGG-19 and the trained model in Numpy format are from [Chris](https://github.com/machrisaa/tensorflow-vgg). The model implementation was modified to take the images pre-processed using openCV as input.  
 
-# Pruning
+## Pruning
   The mapping of the neurons between two successive layers is represented by a weight matrix (ignoring the bias vector for now). The distribution of the weights can be represented by a histogram as shown below:
 <img src="images/histFC1b4.jpg" width="300" height="250"> <img src="images/histFC1after.jpg" width="300" height="250">
-It can be seen that the majority of the weights are distributed around the zero mean and can be removed without any significant loss of accuracy. After removing the weights, the network is retrained or fine-tuned so that the remaining weights readjust and learn the mappings. If present, the drop-out ratio is adjusted accordingly to account for the reduction in the number of weights by pruning. This gradual iterative pruning and fine-tuning of the weights, results in a higher reduction in the number of the weights pruned when compared to pruning the trained network just once. 
+
+It can be seen that the majority of the weights are distributed around the zero mean and can be removed without any significant loss of accuracy. After removing the weights, the network is retrained or fine-tuned so that the remaining weights readjust and learn the mappings. If present, the drop-out ratio is adjusted accordingly to account for the reduction in the number of weights by pruning. This gradual iterative pruning and fine-tuning of the weights, results in a higher reduction in the number of the weights pruned when compared to pruning the trained network just once. After pruning the weights, the isolated/dead neurons that do not have any incoming/outgoing connections can be safely removed. The weight matrix after pruning is saved as a sparse matrix in CSR format. 
   
-# Feasibility experiments
+## Feasibility experiments
+  The initial experiments were performed on the LeNet5 architecture for MNIST classification. The set-up of the pruning process such as: determining the sub-set of layers 

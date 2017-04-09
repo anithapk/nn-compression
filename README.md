@@ -15,4 +15,4 @@
 programmed in python2.7. Tools: Tensorflow 0.12, Numpy, openCV
 
 # Credits
-The tensorflow implementation of VGG-19 and the trained model in Numpy format are from [Chris] (https://github.com/machrisaa/tensorflow-vgg). The model implementation was modified to take the images pre-processed using openCV as input.  
+The tensorflow implementation of VGG-19 and the trained model in Numpy format are from [Chris](https://github.com/machrisaa/tensorflow-vgg). The model implementation was modified to take the images pre-processed using openCV as input.  

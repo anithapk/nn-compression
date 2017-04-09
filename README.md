@@ -31,7 +31,7 @@ If the reduction factor is less than ~5-7X, storing in CSR format is costlier th
   
   The initial experiments were performed on the LeNet5 architecture for MNIST classification. LeNet5 was pruned on a layer by layer basis and in two groups namely the convolution and fully connected layers. Due to the relative simplicity of this task, the network was pruned once after training followed by fine-tuning for 10-25 epochs.
   
-### Take-away:
+### Take-aways:
 1. Group layers with similar size and distribution of weights. (LeNet5 has only 5 layers and pruning layer by layer gives a higher reduction in the number of parameters in each layer compared to pruning in two groups. Alternatively, pruning layer by layer allows better tuning of the threshold for pruning)
 2. Overall 6X parameters can be reduced by pruning
 3. ~10X reduction for fully connected and ~1.5-2.5X reduction for convolution layers
@@ -39,4 +39,14 @@ If the reduction factor is less than ~5-7X, storing in CSR format is costlier th
 
 ## Prunning VGG19
   VGG19 is one the top-performing models in the ImageNet challenge for classification. As it has the maximum number of parameters (~548MB), I tested the performace of pruning based compression on this to better understand the challenges and limitations. I used the 50K validation images from the ILSVRC-2014 with 50 images per class for the 1000 output categories. The images were minimally pre-processed in openCV (mean subtract and random crops of 224x224) and split into train, valid and test batches.
+  
   The network was iteratively pruned at various step-sizes of the pruning threshold: (increments of 0.1 and 0.2, with and without fine-tuning). 
+  
+### Take-aways:
+1. Pruning a larger network is a slow process (>36 hours)
+2. Reduction factor is heavily dependent on the smoothness of pruning process
+3. Overall 5X reduction, 2.5-4.5X reduction for convolution and upto ~18X reduction for fully connected layers
+4. Can be improved with reduction in the step-size of the threshold and more fine-tuning 
+5. The pruned weights still occupy one-third memory needed by the base weights
+
+This leads us to the next and further improvements section.

@@ -3,7 +3,7 @@
 ## Introduction
   Over the years there has been tremendous interest and effort in moving deep learning applications to mobile and embedded platforms. Being a self-driving car enthusiast, the applications that immediately caught my attention are vehicle and pedestrian detection and Google Visual Translate as a travel enthusiast. What makes it challenging to move these applications to resource-limited platforms?
   
-  The depth of the neural networks plays a crucial role in the extracting the hierarchical information in images, specifically for visual tasks. Even though the architecture of these models have improved over time, a typical model still has billions of operations and millions of parameters. This poses challenges in fitting them in memory, specifically in SRAM as SRAM access is three orders of magnitude cheaper than DRAM access. Reducing the size also helps in transmitting the apps built on such models as currently there is a 100MB limit for over the air download of iOS apps.  
+  The depth of the neural networks plays a crucial role in extracting the hierarchical information in images, specifically for visual tasks. Even though the architecture of these models have improved over time, a typical model still has billions of operations and millions of parameters. This poses specific challenges in fitting them in memory, specifically in SRAM as SRAM access is three orders of magnitude cheaper than DRAM access. Reducing the size also helps in transmitting the apps built on such models as currently there is a 100MB limit for over the air download of iOS apps.  
   
   There are many techniques for compressing neural networks such as: [Distillation](https://arxiv.org/abs/1503.02531) - training a smaller model on the softmax proababilities of a larger model, [Binarized neural networks](https://www.nervanasys.com/accelerating-neural-networks-binary-arithmetic/), compressing the parameters [HashedNets](http://www.cse.wustl.edu/~ychen/HashedNets/), [in frequency domain](https://arxiv.org/abs/1506.04449), [pruning](https://arxiv.org/abs/1510.00149), [quantization](https://petewarden.com/2016/05/03/how-to-quantize-neural-networks-with-tensorflow/) and many others.
   
@@ -12,7 +12,7 @@
 [1]:https://arxiv.org/abs/1510.00149
   
 ## Framework 
-programmed in python2.7. Tools: Tensorflow 0.12, Numpy, openCV
+programmed in python2.7. Tools: Tensorflow 0.12, Numpy, openCV. Model trained and pruned in Paperspace Linux system with Nvidia GPU
 
 ## Credits
 The tensorflow implementation of VGG-19 and the trained model in Numpy format are from [Chris](https://github.com/machrisaa/tensorflow-vgg). The model implementation was modified to take the images pre-processed using openCV as input.  
@@ -50,3 +50,10 @@ If the reduction factor is less than ~5-7X, storing in CSR format is costlier th
 5. The pruned weights still occupy one-third memory needed by the base weights
 
 This leads us to the next and further improvements section.
+
+## Further improvements:
+  The following concepts have intrigued me for the entire duration of the project: 
+### How to effectively use the pruning of convolution layers?
+  The reduction factor for the convolution layers is always in the range of 1.5-4.5. Hence they cannot be effectively stored in sparse format.  Moreover, the convolution layers account for a smaller fraction of the total memory used by the model. As the bulk of the computation happens in the convolution layers, it might be possible to exploit the pruning process to reduce the number of operations.
+  
+  Convolution is usually implemented as matrix multiplication in the frequency domain (using FFT and iFFT) and spatial domain  (after re-arranging the filter kernels and the input image). FFT based approaches are preferred for larger filters (7x7,11x11) and matrix multiplication for smaller filters (3x3). [Minimal filtering approaches](https://arxiv.org/abs/1509.09308) can be used to speed up convolution by reducing the number of operations 

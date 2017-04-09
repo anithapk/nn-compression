@@ -27,11 +27,16 @@ It can be seen that the majority of the weights are distributed around the zero 
 If the reduction factor is less than ~5-7X, storing in CSR format is costlier than the raw array format.
   
 ## Feasibility experiments
-  Due to the depth of these networks, they are pruned in stages working on a sub-set of layers while fixing the weights of the remaining layers at their trained value. The way the sub-set of layes are decided depends on its architecture. The general rule of thumb seems to be: group layers that have a similar size and distribution of the weight matrix and prune the weights by gradually increasing the thresholds.
+  Due to the depth of these networks, they are pruned in stages working on a sub-set of layers while fixing the weights of the remaining layers at their trained value. The sub-set of layers for pruning are decided based on the architecture. The general rule of thumb seems to be: group layers that have a similar size and distribution of the weight matrix and prune the weights by gradually increasing the threshold.
   
-  The initial experiments were performed on the LeNet5 architecture for MNIST classification. LeNet5 was pruned on a layer by layer basis and in two groups namely the convolution and fully connected layers. Due to the relatively simplicity of the task, the network was pruned once after training followed by fine-tuning for 10-25 epochs.
+  The initial experiments were performed on the LeNet5 architecture for MNIST classification. LeNet5 was pruned on a layer by layer basis and in two groups namely the convolution and fully connected layers. Due to the relative simplicity of this task, the network was pruned once after training followed by fine-tuning for 10-25 epochs.
   
 ### Take-away:
 1. Group layers with similar size and distribution of weights. (LeNet5 has only 5 layers and pruning layer by layer gives a higher reduction in the number of parameters in each layer compared to pruning in two groups. Alternatively, pruning layer by layer allows better tuning of the threshold for pruning)
 2. Overall 6X parameters can be reduced by pruning
 3. ~10X reduction for fully connected and ~1.5-2.5X reduction for convolution layers
+4. Pruned weights occupy one-third memory needed by the base weights
+
+## Prunning VGG19
+  VGG19 is one the top-performing models in the ImageNet challenge for classification. As it has the maximum number of parameters (~548MB), I tested the performace of pruning based compression on this to better understand the challenges and limitations. I used the 50K validation images from the ILSVRC-2014 with 50 images per class for the 1000 output categories. The images were minimally pre-processed in openCV (mean subtract and random crops of 224x224) and split into train, valid and test batches.
+  The network was iteratively pruned at various step-sizes of the pruning threshold: (increments of 0.1 and 0.2, with and without fine-tuning). 

@@ -20,5 +20,6 @@ The tensorflow implementation of VGG-19 and the trained model in Numpy format ar
 # Pruning
   The mapping of the neurons between two successive layers is represented by a weight matrix (ignoring the bias vector for now). The distribution of the weights can be represented by a histogram as shown below:
 <img src="images/histFC1b4.jpg" width="300" height="250"> <img src="images/histFC1after.jpg" width="300" height="250">
+It can be seen that the majority of the weights are distributed around the zero mean and can be removed without any significant loss of accuracy. After removing the weights, the network is retrained or fine-tuned so that the remaining weights readjust and learn the mappings. If present, the drop-out ratio is adjusted accordingly to account for the reduction in the number of weights by pruning. This gradual iterative pruning and fine-tuning of the weights, results in a higher reduction in the number of the weights pruned when compared to pruning the trained network just once. 
   
 # Feasibility experiments

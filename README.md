@@ -19,6 +19,6 @@ The tensorflow implementation of VGG-19 and the trained model in Numpy format ar
 
 # Pruning
   The mapping of the neurons between two successive layers is represented by a weight matrix (ignoring the bias vector for now). The distribution of the weights can be represented by a histogram as shown below:
-![alt tag](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+![alt tag](https://github.com/anithapk/nn-compression/tree/master/images/histFC1b4.jpg)
   
 # Feasibility experiments

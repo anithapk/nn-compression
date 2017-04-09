@@ -63,3 +63,5 @@ This leads us to the next and further improvements section.
   After pruning, further compression could be obtained by quantizing the weights (to a 16 bit or 8 bit or even lower representations). The challenge here is perform effective convolution and matrix multiplication after quantization. In its quantization module, Tensorflow quantizes the weights to 8 bit and the results of arithmetic operations are aggregated in 32 bit registers. The gemmlowp library provides options for customizing these operations for specific CPU architecture but I believe that there is no support for sparse operations. 
   
   One could theoretically combine both these approches for efficient compression and faster inference (sparse routines for fully connected layers and quantized operations for convolution layers) but a systematic analysis is warranted to understand the pros and cons of each approach.
+
+If interested, more illustrative figures and results can be found in this [presentation](https://anithapk.github.io/nn-fast/).
